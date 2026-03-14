@@ -1,20 +1,17 @@
-from src.power import power_function
-from src.constants import SAMPLE_CONSTANT
+from .task import Task
 
 
 def main() -> None:
     """
-    Обязательнная составляющая программ, которые сдаются. Является точкой входа в приложение
-    :return: Данная функция ничего не возвращает
+    Cоздаёт одну задачу и показывает её основные свойства.
+    :return: None
     """
 
-    target, degree = map(int, input("Введите два числа разделенные пробелом: ").split(" "))
+    task = Task(task_id=1, description="Пример задачи", priority=7)
+    print("Создана задача:", task.short_description)
+    print("Готова к выполнению:", task.is_ready)
+    print("Время создания:", task.created_at)
 
-    result = power_function(target=target, power=degree)
-
-    print(result)
-
-    print(SAMPLE_CONSTANT)
 
 if __name__ == "__main__":
     main()
