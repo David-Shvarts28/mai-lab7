@@ -7,7 +7,7 @@ def main() -> None:
     :return: None
     """
 
-    task = Task(task_id=1, description="Пример задачи", priority=7)
+    task = Task(id=1, description="Пример задачи", priority=7)
     print("Создана задача:", task.short_description)
     print("Готова к выполнению:", task.is_ready)
     print("Время создания:", task.created_at)

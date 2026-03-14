@@ -94,6 +94,14 @@ class PriorityField(ValidatField):
             raise TaskValidatError("priority должен быть в диапазоне от 1 до 10")
 
 
+class PayloadField(ValidatField):
+    """Поле payload. Ожидается словарь."""
+
+    def _validate(self, value: object) -> None:
+        if not isinstance(value, dict):
+            raise TaskValidatError("payload должен быть словарём")
+
+
 class RdCreatTime(BaseDescriptor):
     """Non-data дескриптор. Значение хранится в атрибуте _created_at."""
 

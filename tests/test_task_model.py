@@ -17,8 +17,8 @@ class TaskModelTests(unittest.TestCase):
         :return: None
         """
 
-        task = Task(task_id=1, description="test")
-        self.assertEqual(task.task_id, 1)
+        task = Task(id=1, description="test")
+        self.assertEqual(task.id, 1)
         self.assertEqual(task.description, "test")
         self.assertEqual(task.priority, 5)
         self.assertEqual(task.status, TASK_NEW)
@@ -31,7 +31,7 @@ class TaskModelTests(unittest.TestCase):
         """
 
         with self.assertRaises(TaskValidatError):
-            Task(task_id=1, description="test", priority=100)
+            Task(id=1, description="test", priority=100)
 
     def test_status_flow(self) -> None:
         """
@@ -39,7 +39,7 @@ class TaskModelTests(unittest.TestCase):
         :return: None
         """
 
-        task = Task(task_id="x", description="flow", priority=3)
+        task = Task(id="x", description="flow", priority=3)
         self.assertTrue(task.is_ready)
 
         task.start()
@@ -54,7 +54,7 @@ class TaskModelTests(unittest.TestCase):
         :return: None
         """
 
-        task = Task(task_id=1, description="test")
+        task = Task(id=1, description="test")
         original = task.created_at
         overwritten = datetime.now()
 
@@ -69,7 +69,7 @@ class TaskModelTests(unittest.TestCase):
         """
 
         with self.assertRaises(TaskValidatError):
-            Task(task_id=3.14, description="haram id") #type: ignore
+            Task(id=3.14, description="haram id") #type: ignore
 
     def test_empty_descript(self) -> None:
         """
@@ -78,7 +78,7 @@ class TaskModelTests(unittest.TestCase):
         """
 
         with self.assertRaises(TaskValidatError):
-            Task(task_id=1, description=" ")
+            Task(id=1, description=" ")
 
     def test_priority(self) -> None:
         """
@@ -87,7 +87,7 @@ class TaskModelTests(unittest.TestCase):
         """
 
         with self.assertRaises(TaskValidatError):
-            Task(task_id=1, description="prio", priority=0)
+            Task(id=1, description="prio", priority=0)
 
 
     def test_depends_status(self) -> None:
@@ -96,7 +96,7 @@ class TaskModelTests(unittest.TestCase):
         :return: None
         """
 
-        task = Task(task_id=1, description="test", priority=5)
+        task = Task(id=1, description="test", priority=5)
         self.assertTrue(task.is_ready)
 
         task.start()
@@ -108,7 +108,7 @@ class TaskModelTests(unittest.TestCase):
         :return: None
         """
 
-        task = Task(task_id=1, description="test")
+        task = Task(id=1, description="test")
         task.finish(success=True)
         with self.assertRaises(TaskValidatError):
             task.start()
@@ -119,7 +119,7 @@ class TaskModelTests(unittest.TestCase):
         :return: None
         """
 
-        task = Task(task_id=1, description="test")
+        task = Task(id=1, description="test")
         task.finish(success=True)
         with self.assertRaises(TaskValidatError):
             task.finish()
