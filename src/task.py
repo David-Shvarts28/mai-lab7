@@ -11,24 +11,13 @@ from .descriptors import (
 )
 
 
-TASK_NEW = "new"
-TASK_PROGRESS = "progress"
-TASK_DONE = "done"
-TASK_FAILED = "failed"
-
-
 class StatusField(ValidatField):
     """
     Статус задачи. Разрешены только значения известных строк.
     """
 
     def _validate(self, value: object) -> None:
-        allowed = {
-            TASK_NEW,
-            TASK_PROGRESS,
-            TASK_DONE,
-            TASK_FAILED,
-        }
+        allowed = {"new", "progress", "done", "failed"}
         if value not in allowed:
             raise TaskValidatError("Недопустимый статус задачи")
 
@@ -47,7 +36,7 @@ class Task:
     created_at = RdCreatTime()
     payload = PayloadField(required=False)
 
-    def __init__(self, id: int | str, description: str, priority = 5, status = TASK_NEW, created_at = None, payload = None) -> None:
+    def __init__(self, id: int | str, description: str, priority = 5, status: str = "new", created_at = None, payload = None) -> None:
         """
         Создаёт новую задачу.
 
@@ -74,7 +63,7 @@ class Task:
         :return: True, если задача готова к выполнению
         """
 
-        return self.status == TASK_NEW and self.priority > 0  #type: ignore
+        return self.status == "new" and self.priority > 0 #type: ignore
 
     @property
     def short_description(self) -> str:
@@ -91,11 +80,11 @@ class Task:
         :return: None
         """
 
-        if self.status not in (TASK_NEW, TASK_FAILED):
+        if self.status not in ("new", "failed"):
             raise TaskValidatError(
                 "Перевести в progress можно только новую или неудавшуюся задачу",
             )
-        self.status = TASK_PROGRESS
+        self.status = "progress"
 
     def finish(self, success: bool = True) -> None:
         """
@@ -104,9 +93,9 @@ class Task:
         :return: None
         """
 
-        if self.status not in (TASK_NEW, TASK_PROGRESS):
+        if self.status not in ("new", "progress"):
             raise TaskValidatError("Завершить можно только активную задачу")
-        self.status = TASK_DONE if success else TASK_FAILED
+        self.status = "done" if success else "failed"
 
     def to_dict(self) -> dict:
         """

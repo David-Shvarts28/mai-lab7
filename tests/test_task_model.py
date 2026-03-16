@@ -1,7 +1,7 @@
 import unittest
 from datetime import datetime
 
-from src.task import Task, TASK_NEW, TASK_PROGRESS, TASK_FAILED
+from src.task import Task
 from src.descriptors import TaskValidatError
 
 
@@ -21,7 +21,7 @@ class TaskModelTests(unittest.TestCase):
         self.assertEqual(task.id, 1)
         self.assertEqual(task.description, "test")
         self.assertEqual(task.priority, 5)
-        self.assertEqual(task.status, TASK_NEW)
+        self.assertEqual(task.status, "new")
         self.assertTrue(isinstance(task.created_at, datetime))
 
     def test_invalid_priority_error(self) -> None:
@@ -43,10 +43,10 @@ class TaskModelTests(unittest.TestCase):
         self.assertTrue(task.is_ready)
 
         task.start()
-        self.assertEqual(task.status, TASK_PROGRESS)
+        self.assertEqual(task.status, "progress")
 
         task.finish(success=False)
-        self.assertEqual(task.status, TASK_FAILED)
+        self.assertEqual(task.status, "failed")
 
     def test_creat_read(self) -> None:
         """
